@@ -7,7 +7,6 @@ At Boston University, (or any university), it is relevant and important to be ab
 ## Usage example
 
 The below images illustrate how the app works:
-
 <img src="https://github.com/nullberg/bu-seats/blob/master/images/GTK_BU_seats_example.png" alt="GTK_BU_seats_example.png" width="600px"/>
 
 
