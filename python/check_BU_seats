@@ -1,0 +1,255 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+#
+#
+# check_BU_seats
+#
+#
+# nathan.ullberg@gmail.com
+#
+#
+#
+#
+#
+# Usage:
+# 
+#     In the main() function, you make an instance of the class 'BUcourse',
+#     by entering the parameters of the course you are interested in, such as
+#     buc = BUcourse('2019', 'Fall', 'CAS', 'PY', '451', 'A1')
+#
+#     The way the script works, is that it loops through the HTML <font> tags,
+#     and the thing is that the seat number (and other parameters like the course name, room#, etc)
+#     are contained the font tag.
+#     
+#     So in the printResults() part you need to find the NUMBER of the font tag which contains the seat number.
+#     You need to do some playing around to find this.
+#
+#     It is helpful to go manually to the link, which you can extract by doing
+#     uncommenting the "print self.url" part.
+
+
+
+from bs4 import BeautifulSoup
+import requests
+import sys
+import json
+import time
+import urllib2
+
+
+
+def main():
+
+    # PY452   
+    #buc = BUcourse('2019', 'Fall', 'CAS', 'PY', '452', 'A1')
+
+    # EC503
+    #buc = BUcourse('2019', 'Fall', 'ENG', 'EC', '503', 'A1')
+
+    # EC327
+    #buc = BUcourse('2019', 'Fall', 'ENG', 'EC', '327', 'A1')
+
+    # MP600
+    #buc = BUcourse('2019', 'Fall', 'CFA', 'MP', '600', 'A1')
+
+
+
+    arg_num = len(sys.argv)
+
+    if arg_num != 7:
+        print('You need to supply exactly six arguments!')
+        print('You gave '+str(arg_num) +'.')
+        exit()
+
+
+
+    # check_BU_seats 2019 Fall CFA MP 600 A1
+    # check_BU_seats 2019 Fall CAS PY 452 A1
+    # check_BU_seats 2019 Fall CAS PY 251 A1
+    buc = BUcourse(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
+
+    #print buc.url
+
+    buc.getSeats()
+    #buc.prettyPrintResults()
+    buc.printResults()
+
+class BUcourse:
+
+
+    base_url = 'https://www.bu.edu/link/bin/uiscgi_studentlink.pl/1567106453?'\
+               'ModuleName=univschr.pl&SearchOptionDesc=Class+Number&SearchOptionCd=S&'\
+               'KeySem=20203&'
+
+
+    def __init__(self, year, season, college, dept, course, section):
+
+        self.year = year
+        self.season = season
+        self.college = college
+        self.dept = dept
+        self.course = course
+        self.section = section
+
+        self.url = BUcourse.base_url+ \
+           'ViewSem='+season+'+'+year+'&College='+college+ \
+           '&Dept='+dept+'&Course='+course+'&Section='+section
+
+        self.reqs = 'self.reqs not defined yet'
+        self.bs = 'self.bs not defined yet'
+        self.font = 'self.font not defined yet'
+        self.seats = 'self.seats not defined yet'
+
+
+    def getSeats(self):
+
+        try:
+            self.reqs = requests.get(self.url)
+            self.bs = BeautifulSoup(self.reqs.content,'html.parser')
+            self.font = self.bs.find_all('font')
+            #self.font = self.bs.find_all('font', string='Lecture')
+            #self.tr = self.bs.find_all('tr', limit=6) # third table row is where it's at
+        except:
+            print 'Error in getSeats() function.'
+            exit()
+
+
+
+
+    def printResults(self):
+
+        SEAT_IDX = 'NOT YET DEFINED'
+        for i in range(10,50):
+            if self.dept+self.course in self.font[i].get_text().encode('utf-8'):
+                SEAT_IDX = i + 5  # the seat idx is always 5 font tags after the <COLLEGE> <DEPT><NUM> <SEC> .
+                self.seats = self.font[SEAT_IDX]
+
+
+        myfile = '/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/RESULT.txt'
+
+        with open( myfile,'w+') as f:
+            f.write(self.seats.get_text().strip()+'\n')
+
+
+
+        
+
+
+
+    def prettyPrintResults(self):
+
+        # uncomment this for loop to try different ranges of the font tags
+        # to find the actual font tag that has the seat number
+        #for i in range(30,40):
+        #    print self.font[i].get_text()
+
+        # relevant attributes:  year, season, college, dept, course, section
+
+        #self.seats = self.font[21]
+        #self.seats = self.font[35]
+
+
+        print ''
+        #print 'Checking seats for '+color.BOLD+color.blue+self.dept.upper()+self.course+color.end
+        #print '------------------------'
+        print 'Checking seats for '+color.BOLD+color.lightblue+ \
+            self.season+' '+self.year+' ' +self.college.upper()+' ' + self.dept.upper()+self.course +' '+ self.section + \
+            color.end
+        print '-----------------------------------------'
+
+
+        SEAT_IDX = 'NOT YET DEFINED'
+        for i in range(10,50):
+            if self.dept+self.course in self.font[i].get_text().encode('utf-8'):
+                SEAT_IDX = i + 5  # the seat idx is always 5 font tags after the <COLLEGE> <DEPT><NUM> <SEC> .
+                self.seats = self.font[SEAT_IDX]
+
+        if SEAT_IDX == 'NOT YET DEFINED':
+            print 'Course '+ color.BOLD+color.red+ 'NOT FOUND'+color.end+\
+                ', or something else '+color.BOLD+color.red+'WENT WRONG'+color.end+'!'
+        else:
+            print 'Number of seats left: ' +color.BOLD+color.lightgreen + self.seats.get_text().strip() + color.end
+
+        print ''
+
+
+class color:
+
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    black='\033[30m'
+    red='\033[31m'
+    green='\033[32m'
+    orange='\033[33m'
+    blue='\033[34m'
+    purple='\033[35m'
+    cyan='\033[36m'
+    lightgrey='\033[37m'
+    darkgrey='\033[90m'
+    lightred='\033[91m'
+    lightgreen='\033[92m'
+    yellow='\033[93m'
+    lightblue='\033[94m'
+    pink='\033[95m'
+    lightcyan='\033[96m'
+    end = '\033[0m'
+
+
+
+
+if __name__ == '__main__':
+    main()
+
+    
+
+
+
+
+
+
+# Misc notes
+# -----------------------
+
+
+#myIndex=0
+#for item in font:
+#    item = str(item)
+#    if item.find('3:15pm') != -1:
+#        seats = item
+#        print myIndex
+#    myIndex += 1
+
+# humidity = j['main']['humidity']           # json parse
+
+#j = json.loads(r.content)    # convert json to python dict
+
+
+# trashy basically
+#print self.font[i].get_text().strip()
+#print self.font[i].get_text().encode('utf-8').replace(" ","")
+#print ''.join( str( self.font[i].get_text().encode('utf-8') ).split())
+#if self.college+' '+self.dept+self.course+' '+self.section in self.font[i].get_text().strip().encode('utf-8'):
+
+
+# in case of EC503
+'''
+ENG EC503 A1
+Learng Frm DataIshwar
+
+ 4.0
+Independent
+  14
+'''
+
+# in case of PY451
+'''
+CAS PY452 A1
+Quantum Phys 2Pi
+
+ 4.0
+LectureDiscussion
+   9
+PRBSCI
+148115
+'''

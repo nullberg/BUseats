@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkListStore" id="liststore_colleges">
+    <columns>
+      <!-- column-name gchararray_colleges -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">CAS</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">CFA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">CGS</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">COM</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ENG</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">EOP</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">GMS</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">GRS</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">KHC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">LAW</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">MED</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">MET</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">OTP</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">PDP</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">QST</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SAR</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SDM</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SED</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SHA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SPH</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SSW</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">STH</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">XRG</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststore_semesters">
+    <columns>
+      <!-- column-name gchararray_semester -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">Fall</col>
+      </row>
+      <row>
+        <col id="0">Spring</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststore_years">
+    <columns>
+      <!-- column-name gchararray_years -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">2020</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">2019</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">2018</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">2017</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">2016</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">2015</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">2014</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">2013</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkWindow" id="window_main">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">BU seats app</property>
+    <property name="window_position">center</property>
+    <property name="default_width">720</property>
+    <property name="default_height">320</property>
+    <signal name="destroy" handler="on_window_main_destroy" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton" id="btn_check_seats">
+            <property name="label" translatable="yes">Check seats</property>
+            <property name="width_request">100</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_btn_check_seats_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">238</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="lbl_title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_right">20</property>
+            <property name="label" translatable="yes">Boston University seats</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+              <attribute name="size" value="18000"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="lbl_welcome">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Please input a course below, and the currently available seats will be shown.</property>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">65</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="combobox_semester">
+            <property name="width_request">70</property>
+            <property name="height_request">30</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="model">liststore_semesters</property>
+            <property name="has_entry">True</property>
+            <property name="entry_text_column">0</property>
+            <child internal-child="entry">
+              <object class="GtkEntry" id="entry_semester">
+                <property name="can_focus">False</property>
+                <property name="editable">False</property>
+                <property name="placeholder_text" translatable="yes">Semester</property>
+                <property name="populate_all">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">106</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="combobox_year">
+            <property name="width_request">201</property>
+            <property name="height_request">34</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="model">liststore_years</property>
+            <property name="has_entry">True</property>
+            <property name="entry_text_column">0</property>
+            <child internal-child="entry">
+              <object class="GtkEntry" id="entry_year">
+                <property name="can_focus">True</property>
+                <property name="editable">False</property>
+                <property name="placeholder_text" translatable="yes">Year</property>
+                <property name="populate_all">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">254</property>
+            <property name="y">106</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="combobox_college">
+            <property name="width_request">201</property>
+            <property name="height_request">34</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="model">liststore_colleges</property>
+            <property name="has_entry">True</property>
+            <property name="entry_text_column">0</property>
+            <child internal-child="entry">
+              <object class="GtkEntry" id="entry_college">
+                <property name="can_focus">True</property>
+                <property name="editable">False</property>
+                <property name="placeholder_text" translatable="yes">College</property>
+                <property name="populate_all">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">488</property>
+            <property name="y">106</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_course_num">
+            <property name="width_request">168</property>
+            <property name="height_request">34</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Course #</property>
+            <property name="input_purpose">digits</property>
+          </object>
+          <packing>
+            <property name="x">254</property>
+            <property name="y">160</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_department">
+            <property name="width_request">168</property>
+            <property name="height_request">34</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Department</property>
+            <property name="input_purpose">digits</property>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">160</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_section_num">
+            <property name="width_request">168</property>
+            <property name="height_request">34</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Section #</property>
+            <property name="input_purpose">digits</property>
+          </object>
+          <packing>
+            <property name="x">488</property>
+            <property name="y">160</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="dialog_seats_result">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">BU seats result</property>
+    <property name="default_width">400</property>
+    <property name="default_height">200</property>
+    <property name="type_hint">dialog</property>
+    <property name="gravity">center</property>
+    <property name="transient_for">window_main</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="internal_vbox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="button_box">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="btn_ok">
+                <property name="label" translatable="yes">OK</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btn_OK_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">1</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkLabel" id="lbl_num_seats">
+                <property name="width_request">191</property>
+                <property name="height_request">46</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Number of seats left for</property>
+              </object>
+              <packing>
+                <property name="x">6</property>
+                <property name="y">11</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_query_string">
+                <property name="width_request">258</property>
+                <property name="height_request">46</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">PLACEHOLDER lbl_query_string</property>
+              </object>
+              <packing>
+                <property name="y">41</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_python_output">
+                <property name="width_request">110</property>
+                <property name="height_request">47</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">seats</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="scale" value="2"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x">88</property>
+                <property name="y">81</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
