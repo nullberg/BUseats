@@ -12,21 +12,26 @@
 
 
 #include <gtk/gtk.h>
-
 // #include <stdlib.h>
 
 
 
-// Declare pointers to Widgets
+// Declarations
 // ------------------------------ 
-GtkWidget  *dialog_seats_result;
 
+// GtkLabel pointers
 GtkWidget  *lbl_query_string;
 GtkWidget  *lbl_python_output;
 
+// GtkDialog pointers
+GtkWidget  *dialog_seats_result;
+
+// GtkComboBox pointers
 GtkWidget  *entry_semester;
 GtkWidget  *entry_year;
 GtkWidget  *entry_college;
+
+// GtkEntry pointers
 GtkWidget  *entry_department;
 GtkWidget  *entry_course_num;
 GtkWidget  *entry_section_num;
@@ -73,12 +78,11 @@ int main( int argc,  char *argv[] )
 }
 
 
-
-
-// called when button is clicked
-void on_btn_check_seats_clicked()
+// Returns a string of the inputs
+const char *getMasterString()
 {
 
+    static char my_master_string[50] = "";
 
     const gchar *semester;
     const gchar *year;
@@ -94,19 +98,29 @@ void on_btn_check_seats_clicked()
     course_num   =  gtk_entry_get_text( GTK_ENTRY(entry_course_num) );
     section_num  =  gtk_entry_get_text( GTK_ENTRY(entry_section_num) );
 
-    char master_string[50] = "";
-    strcat(master_string,semester);
-    strcat(master_string," ");
-    strcat(master_string,year);
-    strcat(master_string," ");
-    strcat(master_string,college);
-    strcat(master_string," ");
-    strcat(master_string,department);
-    strcat(master_string," ");
-    strcat(master_string,course_num);
-    strcat(master_string," ");
-    strcat(master_string,section_num);
+    strcpy(my_master_string,""); // Must reset it first
 
+    strcat(my_master_string,semester);
+    strcat(my_master_string," ");
+    strcat(my_master_string,year);
+    strcat(my_master_string," ");
+    strcat(my_master_string,college);
+    strcat(my_master_string," ");
+    strcat(my_master_string,department);
+    strcat(my_master_string," ");
+    strcat(my_master_string,course_num);
+    strcat(my_master_string," ");
+    strcat(my_master_string,section_num);
+
+    return my_master_string;
+}
+
+// called when button "Check seats" is clicked
+void on_btn_check_seats_clicked()
+{
+
+    char master_string[50] = "";
+    strcpy( master_string, getMasterString() );
     gtk_label_set_text( GTK_LABEL(lbl_query_string), master_string );
 
 
