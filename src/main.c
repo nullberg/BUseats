@@ -1,6 +1,11 @@
+// -------------------
+//    main.c
+// -------------------
 
-// main.c
 
+
+// Links
+// -----------
 // getting setup with Glade and C:   https://prognotes.net/2016/03/gtk-3-c-code-hello-world-tutorial-using-glade-3/
 // Menu dropdown:                    http://zetcode.com/gui/gtk2/menusandtoolbars/
 // Menu dropdown in python:          https://developer.gnome.org/gnome-devel-demos/stable/menubutton.py.html.en
@@ -16,6 +21,9 @@
 // ------------------------------ 
 GtkWidget  *dialog_seats_result;
 
+GtkWidget  *lbl_query_string;
+GtkWidget  *lbl_python_output;
+
 GtkWidget  *entry_semester;
 GtkWidget  *entry_year;
 GtkWidget  *entry_college;
@@ -23,9 +31,6 @@ GtkWidget  *entry_department;
 GtkWidget  *entry_course_num;
 GtkWidget  *entry_section_num;
 
-
-GtkWidget  *lbl_query_string;
-GtkWidget  *lbl_python_output;
 // ------------------------------ 
 
 
@@ -74,13 +79,6 @@ int main( int argc,  char *argv[] )
 void on_btn_check_seats_clicked()
 {
 
-    // EXAMPLE of having count label lbl_count
-    //char str_count[30] = {0};
-    //static unsigned int count = 0;
-    //count++;
-    //sprintf(str_count, "counter: %d", count);
-    //gtk_label_set_text( GTK_LABEL(lbl_count),  str_count );
-
 
     const gchar *semester;
     const gchar *year;
@@ -89,14 +87,12 @@ void on_btn_check_seats_clicked()
     const gchar *course_num;
     const gchar *section_num;
 
-
-    semester = gtk_entry_get_text( GTK_ENTRY(entry_semester) );
-    year = gtk_entry_get_text( GTK_ENTRY(entry_year) );
-    college = gtk_entry_get_text( GTK_ENTRY(entry_college) );
-    department = gtk_entry_get_text( GTK_ENTRY(entry_department) );
-    course_num = gtk_entry_get_text( GTK_ENTRY(entry_course_num) );
-    section_num = gtk_entry_get_text( GTK_ENTRY(entry_section_num) );
-
+    semester     =  gtk_entry_get_text( GTK_ENTRY(entry_semester) );
+    year         =  gtk_entry_get_text( GTK_ENTRY(entry_year) );
+    college      =  gtk_entry_get_text( GTK_ENTRY(entry_college) );
+    department   =  gtk_entry_get_text( GTK_ENTRY(entry_department) );
+    course_num   =  gtk_entry_get_text( GTK_ENTRY(entry_course_num) );
+    section_num  =  gtk_entry_get_text( GTK_ENTRY(entry_section_num) );
 
     char master_string[50] = "";
     strcat(master_string,semester);
@@ -119,10 +115,6 @@ void on_btn_check_seats_clicked()
 
     strcat(python_command, master_string);
 
-
-    // ./check_BU_seats 2019 Fall CFA MP 600 A1
-    //system("/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/check_BU_seats '2019' 'Fall' 'CFA' 'MP' '600' 'A1'");
-    //system(strcat("/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/check_BU_seats ",master_string));
     system(python_command);
     printf("%s\n",python_command);
 
@@ -160,7 +152,9 @@ void on_btn_check_seats_clicked()
 
 void on_btn_OK_clicked()
 {
-    gtk_widget_destroy(dialog_seats_result);   
+    // gtk_widget_destroy(dialog_seats_result);
+    gtk_widget_hide(dialog_seats_result);
+    
 }
 
 
@@ -203,8 +197,6 @@ void seats_result_dialog(GtkWindow *parent, gchar *message)
 }
 */
 
-
-
  
 // called when window is closed
 void on_window_main_destroy()
@@ -217,4 +209,16 @@ void on_window_main_destroy()
 
 
 
+// Misc info
+// ----------------
 
+// ./check_BU_seats 2019 Fall CFA MP 600 A1
+// system("/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/check_BU_seats '2019' 'Fall' 'CFA' 'MP' '600' 'A1'");
+// system(strcat("/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/check_BU_seats ",master_string));
+
+// EXAMPLE of having count label lbl_count:
+// char str_count[30] = {0};
+// static unsigned int count = 0;
+// count++;
+// sprintf(str_count, "counter: %d", count);
+// gtk_label_set_text( GTK_LABEL(lbl_count),  str_count );
