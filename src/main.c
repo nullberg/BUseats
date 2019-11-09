@@ -118,20 +118,17 @@ void on_btn_check_seats_clicked()
     system(python_command);
     printf("%s\n",python_command);
 
-    char var[100];
+    char num_from_file[100];
     FILE *file;
     file = fopen("/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/RESULT.txt","r");
-    while(fgets(var, sizeof(var), file)!=NULL)
-    printf("Data read=%s\n",var);
+    while(fgets(num_from_file, sizeof(num_from_file), file)!=NULL)
+    printf("Data read=%s\n",num_from_file);
     fclose(file);
 
-    strcpy( seats_output, var );
-
+    strcpy( seats_output, num_from_file );
 
     gtk_label_set_text( GTK_LABEL( lbl_python_output), seats_output );
 
-
-    //seats_result_dialog();
 
     // doc:  https://developer.gnome.org/gtk3/stable/GtkDialog.html
     //--------------------------------
