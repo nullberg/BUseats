@@ -215,7 +215,7 @@
             <property name="entry_text_column">0</property>
             <child internal-child="entry">
               <object class="GtkEntry" id="entry_year">
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="editable">False</property>
                 <property name="placeholder_text" translatable="yes">Year</property>
                 <property name="populate_all">True</property>
@@ -238,7 +238,7 @@
             <property name="entry_text_column">0</property>
             <child internal-child="entry">
               <object class="GtkEntry" id="entry_college">
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="editable">False</property>
                 <property name="placeholder_text" translatable="yes">College</property>
                 <property name="populate_all">True</property>

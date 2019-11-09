@@ -136,7 +136,7 @@ void on_btn_check_seats_clicked()
     FILE *file;
     file = fopen("/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/RESULT.txt","r");
     while(fgets(num_from_file, sizeof(num_from_file), file)!=NULL)
-    printf("Data read=%s\n",num_from_file);
+    printf("Content of RESULTS.txt = %s\n",num_from_file);
     fclose(file);
 
     strcpy( seats_output, num_from_file );
@@ -167,6 +167,13 @@ void on_btn_OK_clicked()
     gtk_widget_hide(dialog_seats_result);
     
 }
+
+void on_window_main_destroy()
+{
+  //gtk_widget_destroy(dialog_seats_result);
+    gtk_main_quit();
+}
+
 
 
 
@@ -210,11 +217,6 @@ void seats_result_dialog(GtkWindow *parent, gchar *message)
 
  
 // called when window is closed
-void on_window_main_destroy()
-{
-    gtk_widget_destroy(dialog_seats_result);
-    gtk_main_quit();
-}
 
 
 
