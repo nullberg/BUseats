@@ -38,6 +38,12 @@ import time
 import urllib2
 
 
+# Global variables
+# ------------------------
+RESULT_FILE = '/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/RESULT.txt'
+# ------------------------
+
+
 
 def main():
 
@@ -53,13 +59,17 @@ def main():
     # MP600
     #buc = BUcourse('2019', 'Fall', 'CFA', 'MP', '600', 'A1')
 
-
+    global RESULT_FILE
 
     arg_num = len(sys.argv)
 
     if arg_num != 7:
         print('You need to supply exactly six arguments!')
         print('You gave '+str(arg_num) +'.')
+
+        with open( RESULT_FILE,'w+') as f:
+            f.write('-2'+'\n') # error code -2 means wrong number of arguments
+
         exit()
 
 
@@ -82,6 +92,8 @@ class BUcourse:
                'ModuleName=univschr.pl&SearchOptionDesc=Class+Number&SearchOptionCd=S&'\
                'KeySem=20203&'
 
+    global RESULT_FILE
+
 
     def __init__(self, year, season, college, dept, course, section):
 
@@ -100,7 +112,7 @@ class BUcourse:
         self.bs = 'self.bs not defined yet'
         self.font = 'self.font not defined yet'
         self.seats = 'self.seats not defined yet'
-
+      
 
     def getSeats(self):
 
@@ -112,8 +124,12 @@ class BUcourse:
             #self.tr = self.bs.find_all('tr', limit=6) # third table row is where it's at
         except:
             print 'Error in getSeats() function.'
-            exit()
 
+            # write error code in result file
+            with open( RESULT_FILE,'w+') as f:
+                f.write('-3'+'\n') # error code -3 means REQUEST didn't work
+
+            exit()
 
 
 
@@ -125,15 +141,13 @@ class BUcourse:
                 SEAT_IDX = i + 5  # the seat idx is always 5 font tags after the <COLLEGE> <DEPT><NUM> <SEC> .
                 self.seats = self.font[SEAT_IDX]
 
+        try:
+            with open( RESULT_FILE,'w+') as f:
+                f.write(self.seats.get_text().strip()+'\n')
+        except:
+            with open( RESULT_FILE,'w+') as f:
+                f.write('-3'+'\n') # error code -3 means REQUEST didn't work
 
-        myfile = '/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/RESULT.txt'
-
-        with open( myfile,'w+') as f:
-            f.write(self.seats.get_text().strip()+'\n')
-
-
-
-        
 
 
 
