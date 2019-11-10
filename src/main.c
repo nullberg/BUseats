@@ -156,7 +156,6 @@ void on_btn_check_seats_clicked()
           // do_nothing_since_dialog_was_cancelled ();
           break;
     }
-
     //--------------------------------
 
 }
@@ -170,7 +169,7 @@ void on_btn_OK_clicked()
 
 void on_window_main_destroy()
 {
-  //gtk_widget_destroy(dialog_seats_result);
+    //gtk_widget_destroy(dialog_seats_result);
     gtk_main_quit();
 }
 
