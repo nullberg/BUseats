@@ -9,6 +9,7 @@
 // getting setup with Glade and C:   https://prognotes.net/2016/03/gtk-3-c-code-hello-world-tutorial-using-glade-3/
 // Menu dropdown:                    http://zetcode.com/gui/gtk2/menusandtoolbars/
 // Menu dropdown in python:          https://developer.gnome.org/gnome-devel-demos/stable/menubutton.py.html.en
+// GtkDialog docs:                   https://developer.gnome.org/gtk3/stable/GtkDialog.html
 
 
 #include <gtk/gtk.h>
@@ -79,7 +80,7 @@ int main( int argc,  char *argv[] )
 
 
 // Returns a string of the inputs
-const char *getMasterString()
+char *getMasterString()
 {
 
     static char my_master_string[50] = "";
@@ -115,37 +116,70 @@ const char *getMasterString()
     return my_master_string;
 }
 
+
+
+// Calls the python function and returns result as int
+int getPythonSeatsResult(char *ptr_master_string)
+{
+    char python_command[150] = "/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/check_BU_seats ";
+
+    strcat(python_command, ptr_master_string);
+
+    system(python_command);
+    printf("%s\n",python_command);
+
+    char num_from_file[40];
+    FILE *file;
+    file = fopen("/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/RESULT.txt","r");
+    while(fgets(num_from_file, sizeof(num_from_file), file)!=NULL)
+        printf("Content of RESULTS.txt = %s\n",num_from_file);
+    fclose(file);
+
+    return atoi(num_from_file);  // return type-cast of "string" num_from_file  --->  int
+}
+
+
+
 // called when button "Check seats" is clicked
 void on_btn_check_seats_clicked()
 {
 
     char master_string[50] = "";
     strcpy( master_string, getMasterString() );
-    gtk_label_set_text( GTK_LABEL(lbl_query_string), master_string );
+
+    int pythonCallResult = -1;  // The "-1" error code indicates that the function call didn't work.
+    pythonCallResult = getPythonSeatsResult( getMasterString() );
+
+    char seats_output[50] = "Error = "; // Default it to say Error
+    char err_str[10] = "";
+    gtk_label_set_text( GTK_LABEL( lbl_query_string), master_string );
+
+    switch (pythonCallResult)
+    {
+        case -1: // error code "-1" means function-call error
+            sprintf(err_str,"%d",pythonCallResult);
+            strcat(seats_output, err_str );
+            gtk_label_set_text( GTK_LABEL( lbl_python_output ), seats_output );
+	    break;
+        case -2: // error code "-2" means wrong num of args for python script
+            sprintf(err_str,"%d",pythonCallResult);
+            strcat(seats_output, err_str );
+	    gtk_label_set_text( GTK_LABEL( lbl_python_output ), seats_output );
+	    break;
+        case -3: // error code "-3" means the web query in Python script did not work
+            sprintf(err_str,"%d",pythonCallResult);
+            strcat(seats_output, err_str );
+	    gtk_label_set_text( GTK_LABEL( lbl_python_output ), seats_output );
+	    break;
+        default:
+            sprintf(seats_output,"%d",pythonCallResult);
+	    gtk_label_set_text( GTK_LABEL( lbl_python_output ), seats_output );
+	    break;
+    }
 
 
-    char seats_output[50] = "";
-    char python_command[150] = "/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/check_BU_seats ";
-
-    strcat(python_command, master_string);
-
-    system(python_command);
-    printf("%s\n",python_command);
-
-    char num_from_file[100];
-    FILE *file;
-    file = fopen("/home/omega/SW_projects/GTK_projects/using_Glade/bu-seats/python/RESULT.txt","r");
-    while(fgets(num_from_file, sizeof(num_from_file), file)!=NULL)
-    printf("Content of RESULTS.txt = %s\n",num_from_file);
-    fclose(file);
-
-    strcpy( seats_output, num_from_file );
-
-    gtk_label_set_text( GTK_LABEL( lbl_python_output), seats_output );
-
-
-    // doc:  https://developer.gnome.org/gtk3/stable/GtkDialog.html
-    //--------------------------------
+    // Run GtkDialog dialog_seats_result
+    // -----------------------------------------
     gint result = gtk_dialog_run( GTK_DIALOG(dialog_seats_result) );
     switch (result)
     {
@@ -156,7 +190,8 @@ void on_btn_check_seats_clicked()
           // do_nothing_since_dialog_was_cancelled ();
           break;
     }
-    //--------------------------------
+    // -----------------------------------------
+
 
 }
 
