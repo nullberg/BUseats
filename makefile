@@ -1,5 +1,5 @@
 # change application name here (executable output name)
-TARGET=BU-seats
+TARGET=BUseats
  
 # compiler
 CC=gcc
